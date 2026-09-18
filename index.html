@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Gel Electrophoresis</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f7f9;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #17324d;
+        }
+
+        input {
+            width: 300px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin-left: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .gel {
+            width: 500px;
+            height: 350px;
+            margin: 30px auto;
+            background: #dceef0;
+            border: 8px solid #9bbfc3;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .band {
+            position: absolute;
+            height: 8px;
+            width: 70px;
+            background: #222;
+            border-radius: 10px;
+            left: 215px;
+        }
+
+        .label {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🧪 Virtual Agarose Gel Electrophoresis</h1>
+
+    <p>Enter DNA fragment sizes (bp), separated by commas:</p>
+
+    <input id="dnaInput" placeholder="Example: 500, 1000, 1500, 2000">
+
+    <button onclick="runGel()">Run Gel 🧬</button>
+
+    <div class="gel" id="gel"></div>
+
+    <div class="label" id="result"></div>
+
+    <script>
+        function runGel() {
+
+            const input = document.getElementById("dnaInput").value;
+
+            const sizes = input
+                .split(",")
+                .map(Number)
+                .filter(size => size > 0);
+
+            const gel = document.getElementById("gel");
+            const result = document.getElementById("result");
+
+            gel.innerHTML = "";
+
+            if (sizes.length === 0) {
+                result.innerHTML = "Please enter valid DNA fragment sizes.";
+                return;
+            }
+
+            const largest = Math.max(...sizes);
+
+            sizes.forEach(size => {
+
+                const band = document.createElement("div");
+
+                band.className = "band";
+
+                const position =
+                    40 + ((largest - size) / largest) * 260;
+
+                band.style.top = position + "px";
+
+                gel.appendChild(band);
+            });
+
+            result.innerHTML =
+                "🧬 " + sizes.length +
+                " DNA fragments detected.";
+        }
+    </script>
+
+</body>
+</html>
